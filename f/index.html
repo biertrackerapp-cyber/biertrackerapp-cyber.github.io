@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BierTracker – Einladung</title>
+<meta property="og:title" content="Komm zu BierTracker">
+<meta property="og:description" content="Gemeinsam weniger trinken: vergleicht eure Wochen und schließt Wetten ab.">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .btn { display:block; text-align:center; text-decoration:none; font-weight:600; font-size:17px; padding:16px; border-radius:999px; margin:12px 0; }
+  .primary { background: var(--ink); color: var(--ground); }
+  .secondary { background: var(--surface); color: var(--ink); }
+  .big { font-size: 26px; color: var(--ink); font-weight: 600; margin: 8px 0 4px; }
+  ol { padding-left: 20px; }
+</style>
+</head>
+<body>
+<main>
+  <header><div class="logo">B</div><h1 id="title">Du wurdest eingeladen</h1></header>
+  <div class="card">
+    <p class="big" id="who">Komm zu BierTracker</p>
+    <p id="what">Gemeinsam weniger trinken: Vergleicht eure Wochen und schließt Wetten ab, wer weniger trinkt.</p>
+    <a class="btn primary" id="open" href="#">In BierTracker öffnen</a>
+    <a class="btn secondary" id="install" href="#">BierTracker noch nicht installiert?</a>
+  </div>
+  <h2>So geht's</h2>
+  <ol>
+    <li>Falls du die App noch nicht hast: Auf „noch nicht installiert?“ tippen, TestFlight laden und BierTracker installieren.</li>
+    <li>Dann diese Seite noch einmal öffnen und auf „In BierTracker öffnen“ tippen.</li>
+    <li>Fertig: Ihr seht euch im Tab „Freunde“.</li>
+  </ol>
+  <p class="muted">Kein iPhone? BierTracker gibt es vorerst nur für iPhone und Apple Watch.</p>
+</main>
+<script>
+  // Hier den öffentlichen TestFlight-Link eintragen, sobald er da ist (später: App-Store-Link)
+  const INSTALL_URL = "https://testflight.apple.com/";
+  const p = new URLSearchParams(location.search);
+  const code = (p.get("c") || "").replace(/[^A-Z0-9]/gi, "").slice(0, 6);
+  const bet = (p.get("b") || "").replace(/[^A-Z0-9]/gi, "").slice(0, 6);
+  const name = (p.get("n") || "").slice(0, 30);
+  const esc = s => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  if (bet) {
+    document.getElementById("who").innerHTML = name ? esc(name) + " fordert dich zu einer Wette heraus" : "Du wurdest zu einer Wette eingeladen";
+  } else if (name) {
+    document.getElementById("who").innerHTML = esc(name) + " lädt dich zu BierTracker ein";
+  }
+  const q = new URLSearchParams();
+  if (code) q.set("c", code);
+  if (bet) q.set("b", bet);
+  if (name) q.set("n", name);
+  document.getElementById("open").href = "biertracker://invite?" + q.toString();
+  document.getElementById("install").href = INSTALL_URL;
+</script>
+</body>
+</html>
